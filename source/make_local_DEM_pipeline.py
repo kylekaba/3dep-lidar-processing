@@ -11,6 +11,14 @@ def make_local_DEM_pipeline(laz_file_path, dem_type='dtm', dem_resolution=1.0, o
             "type": "filters.range",
             "limits": "Classification[2:2]"
         })
+    # Bit of a tongue and cheek designation
+    # The idea is to generate a building and vegetation model of just building and all vegetation points
+    
+    else if dem_type =='bvm' :
+        filters.append({
+            "type": "filters.range",
+            "limits": "Classification[3:7]"
+        })
     
     writer = {
         "type": "writers.gdal",
