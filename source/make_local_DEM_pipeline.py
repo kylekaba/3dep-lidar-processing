@@ -1,3 +1,9 @@
+import os
+import json
+import pdal
+import rioxarray as rio
+from pathlib import Path
+
 # Define the modified make_local_DEM_pipeline function
 def make_local_DEM_pipeline(laz_file_path, dem_type='dtm', dem_resolution=1.0, output_path='output_dem.tif'):
     reader = {
@@ -13,7 +19,7 @@ def make_local_DEM_pipeline(laz_file_path, dem_type='dtm', dem_resolution=1.0, o
         })
     # Bit of a tongue and cheek designation
     # The idea is to generate a building and vegetation model of just building and all vegetation points
-    
+
     else if dem_type =='bvm' :
         filters.append({
             "type": "filters.range",

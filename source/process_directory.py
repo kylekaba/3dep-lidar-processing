@@ -28,6 +28,6 @@ def process_directory(directory_path):
 
         # Create CHM
         chm_output_path = str(output_directory / f"{base_name}_chm.tif")
-        create_chm(dsm_output_path, dtm_output_path, chm_output_path)
+        create_chm(dsm_output_path, dtm_output_path, chm_output_path
 
         print(f"Processed DTM, DSM, BVM, and CHM for: {laz_file.name}")
