@@ -14,22 +14,8 @@ import traceback
 import multiprocessing
 from multiprocessing import Pool, cpu_count
 
-
-def make_local_DEM_pipeline(laz_file_path, dem_type='dtm', dem_resolution=1.0, output_path='output_dem.tif', filterNoise=True):
-    """
-    Constructs a PDAL pipeline configuration (JSON) for generating various types of Digital Elevation Models (DEMs) or masks from a LAZ file.
-
-    Args:
-        laz_file_path (str): Path to the input LAZ file.
-        dem_type (str, optional):  The type of DEM or mask to generate. Options include: 'dtm' (bare earth), 'dsm' (all points), 'pnc' (processed but unclassified), 'lvm' (low vegetation), 'mvm' (medium vegetation), 'hvm' (high vegetation), 'bm' (building), 'wm' (water), 'bdm' (bridge deck), 'igm' (ignored ground), 'sm' (snow), 'tem' (temporal exclusion). Defaults to 'dtm'.
-        dem_resolution (float, optional):  Desired resolution of the output DEM in meters. Defaults to 1.0.
-        output_path (str, optional): Path where the generated DEM GeoTIFF will be saved. Defaults to 'output_dem.tif'.
-        filterNoise (bool, optional): If True, applies filters to remove noise points at the beginning of the pipeline. Defaults to True.
-
-    Returns:
-        str:  A JSON string representing the configured PDAL pipeline.
-    """
-    
+# Define the modified make_local_DEM_pipeline function
+def make_local_DEM_pipeline(laz_file_path, dem_type='dtm', dem_resolution=1.0, output_path='output_dem.tif',filterNoise=True):
     reader = {
         "type": "readers.las",
         "filename": laz_file_path,
@@ -159,42 +145,10 @@ def make_local_DEM_pipeline(laz_file_path, dem_type='dtm', dem_resolution=1.0, o
     return json.dumps(pipeline_dict)
 
 
-def interpolate_raster_nearest(dtm_path, dsm_path, lvm_path, mvm_path, hvm_path, bm_path, wm_path, bdm_path, 
-                               igm_path, sm_path, tem_path, pnc_path, output_path):
-    """
-    Performs nearest-neighbor interpolation on a Digital Terrain Model (DTM) raster, filling in missing data points, and generates a classification map.
+def interpolate_raster_nearest(dtm_path,dsm_path,lvm_path,mvm_path,hvm_path,bm_path,wm_path,bdm_path,
+                               igm_path,sm_path,tem_path,pnc_path,output_path):
 
-    **Steps:**
-
-    1. **Loading and Reprojecting Rasters:**
-       * Opens the DTM, DSM, and various classification masks (lvm, mvm, etc.).
-       * Ensures all masks are reprojected to match the DTM's spatial reference and resolution.
-
-    2. **Creating 'No-Data' Masks:**
-       * Generates binary masks for each raster where 0 represents 'no-data' and a positive integer represents pixels of that specific classification.
-
-    3. **Combining 'No-Data' Masks:**
-       * Creates a composite 'no-data' mask. Pixels with a value of 0 in this mask are truly 'no-data' (not classified by any of the input masks).
-
-    4. **DTM Interpolation:**
-       * Interpolates the DTM using a nearest-neighbor algorithm, replacing 'no-data' values with the nearest valid neighboring pixel.
-       * Converts the interpolated DTM to meters using a conversion factor.
-
-    5. **Writing Interpolated DTM:**
-        * Re-introduces 'no-data' (NaN) values in the interpolated DTM based on the combined 'no-data' mask.
-        * Saves the final interpolated DTM to the `output_path`.
-
-    6. **Generating Classification Map:**
-       * **Identifies pixels as either 'unclassified' or 'ground' using a threshold comparison between DTM and DSM.**  
-       * **Determines maximum vegetation or building class:** Calculates the maximum difference between DSM and various vegetation/building masks and assigns corresponding classification labels.
-       * **Creates Classification Raster:** Constructs a multi-band raster representing the different 'no-data' classes, allowing for further analysis. 
-       * **Saves Classification Raster:** Writes the classification map as a GeoTIFF file.
-
-    7. **Cleanup:**
-       * Closes raster datasets (if necessary for the format).
-       * Deletes variables and calls the garbage collector for memory management.
-    """
-
+    
     # Conversion factor between US survey feet and meters
     conversion_factor = 1200/3937
     
@@ -363,20 +317,7 @@ def interpolate_raster_nearest(dtm_path, dsm_path, lvm_path, mvm_path, hvm_path,
     # Call garbage collector to free up memory
     gc.collect()
 
-
 def create_chm(dsm_path, interpolated_dtm_path, chm_path):
-    """
-    Generates a Canopy Height Model (CHM) raster by subtracting a Digital Terrain Model (DTM) from a Digital Surface Model (DSM).
-
-    Steps:
-        1. Loads the DSM and interpolated DTM rasters.
-        2. Converts the DSM's units (if necessary) from US Survey Feet to meters.
-        3. Reprojects the DSM to ensure alignment with the DTM in terms of resolution and spatial reference.
-        4. Calculates the CHM by subtracting the DTM from the DSM (pixel-wise).
-        5. Sets 'nodata' values in the CHM based on the DTM's 'nodata'.
-        6. Saves the resulting CHM raster.
-        7. Performs cleanup by closing datasets and releasing memory. 
-    """
     # Read DSM and DTM rasters
     dtm = rio.open_rasterio(interpolated_dtm_path, masked=True)
     dsm = rio.open_rasterio(dsm_path, masked=True)
@@ -415,16 +356,7 @@ def create_chm(dsm_path, interpolated_dtm_path, chm_path):
     # Call garbage collector to free up memory
     gc.collect()
 
-
 def create_empty_mask(dtm_path, output_path):
-    """
-    Creates an empty raster mask with the same dimensions, spatial reference, and 
-    metadata as an input DTM (Digital Terrain Model) raster, with all values set to zero. 
-
-    Args:
-        dtm_path (str): Path to the input DTM raster file.
-        output_path (str): Path where the empty mask raster file will be saved.
-    """
     # Open the DTM raster
     dtm = rio.open_rasterio(dtm_path)
 
@@ -445,11 +377,8 @@ def create_empty_mask(dtm_path, output_path):
     # Write out the empty mask to a raster
     empty_mask.rio.to_raster(output_path)
 
-
+# Function that checks whether a given classification has any points or not.
 def check_classification_points(laz_file_path, classification):
-    """
-    Function that checks whether a given classification has any points or not.
-    """
     pipeline_json = json.dumps({
     "pipeline": [
     {"type": "readers.las", "filename": laz_file_path},
@@ -469,7 +398,6 @@ def check_classification_points(laz_file_path, classification):
     else:
         return True
 
-
 def close_datasets(*args):
     """
     Close any open rioxarray datasets to free up memory.
@@ -477,7 +405,6 @@ def close_datasets(*args):
     for arg in args:
         if isinstance(arg, rio.rioxarray.RasterArray):
             arg.close()
-
 
 def process_single_file(laz_file_path, output_directory):
   """
@@ -487,6 +414,7 @@ def process_single_file(laz_file_path, output_directory):
       laz_file_path: Path to the input LAZ file.
       output_dir: Path to the output directory where results will be saved.
   """
+
   try:
     base_name = Path(laz_file_path).stem
 
@@ -634,11 +562,7 @@ def process_single_file(laz_file_path, output_directory):
       traceback.print_exc()
       return str(laz_file_path), e  # Error encountered
 
-
 def already_processed_check(laz_file,output_directory):
-    """
-    Checks whether a .laz file has already been processed through the pipeline by checking for the presence of a CHM with the same extension.
-    """
     # Extract the base name without the file extension
     base_name = Path(laz_file).stem
     # Check if the corresponding CHM File exists
@@ -646,17 +570,8 @@ def already_processed_check(laz_file,output_directory):
     return chm_file.exists()
 
 
-def process_directory(directory_path, output_directory, num_cores, n_start=None, n_end=None):
-    """
-    Coordinates the processing of multiple LAZ files within a directory, designed for parallel execution.
+def process_directory(directory_path,output_directory,num_cores,n_start=None,n_end=None):
 
-    Args:
-        directory_path (str): Path to the directory containing LAZ files.
-        output_directory (str): Path where the results will be stored.
-        num_cores (int): Number of CPU cores to utilize for parallel processing.
-        n_start (int, optional): Index of the first LAZ file to process (for slicing).
-        n_end (int, optional): Index of the last LAZ file to process (for slicing).
-    """
     # Sort the laz files
     laz_files = sorted(Path(directory_path).rglob('*.laz'))
 
@@ -670,9 +585,8 @@ def process_directory(directory_path, output_directory, num_cores, n_start=None,
     # Use multiprocessing to map the pipeline to different files 
     if __name__ == '__main__':
         pool = multiprocessing.Pool(processes=num_cores,maxtasksperchild=1)
-        pool.starmap(process_single_file, zip(laz_files_to_process, [oput_dir] * len(laz_files_to_process)))
+        pool.starmap(process_single_file, zip(laz_files_to_process, [output_directory] * len(laz_files_to_process)))
         pool.close()
         pool.join()
     
     gc.collect()
-
