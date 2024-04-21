@@ -16,8 +16,11 @@ As of this version, the most straight forward approach to apply this code is to 
 data_directory = 'path-to-laz-files'
 oput_dir = 'path-to-output-directory'
 if __name__ == '__main__':
-    process_directory(data_directory, oput_dir,3,0,10)
+    process_directory(data_directory, oput_dir,num_cores,n_start,n_end)
 ```
 
 **data_directory**: The directory where the .las or .laz aerial lidar point clouds are hosted.
+
 **oput_dir**: The desired output directory where the four lidar derivative products (Digital Terrain Model (DTM), Digital Surface Model (DSM), Canopy Height Model (CHM), and Land Cover Classification Maps.
+
+
