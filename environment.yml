@@ -1,0 +1,13 @@
+name: lidar_utils  # Your environment name
+channels:
+    - conda-forge
+    - defaults
+dependencies:
+    - python=3.12.0
+    - pdal
+    - rioxarray
+    - scipy
+    - numpy
+    - xarray
+    - traceback
+    - multiprocessing
