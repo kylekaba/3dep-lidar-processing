@@ -19,8 +19,24 @@ if __name__ == '__main__':
     process_directory(data_directory, oput_dir,num_cores,n_start,n_end)
 ```
 
-**data_directory**: The directory where the .las or .laz aerial lidar point clouds are hosted.
+*data_directory*: The directory where the .las or .laz aerial lidar point clouds are hosted.
 
-**oput_dir**: The desired output directory where the four lidar derivative products (Digital Terrain Model (DTM), Digital Surface Model (DSM), Canopy Height Model (CHM), and Land Cover Classification Maps.
+*oput_dir*: The desired output directory where the four lidar derivative products (Digital Terrain Model (DTM), Digital Surface Model (DSM), Canopy Height Model (CHM), and Land Cover Classification Maps.
+
+*num_cores*: The number of CPU processors that will be used. Each processor will independently process a .las or .laz file.
+
+*n_start*: Starting index used to indicate where in the sorted list of .laz files the processing will begin. Default is **None**.
+
+*n_end*: Ending index used to indicate where in the sorted list of .laz files the processing will end. Default is **None**.
+
+Note that if *n_start* and *n_end* are both set to **None**, all of the .laz files within the directory will be processed.
+
+## Description of Derivative Products
+
+DTM: A digital terrain model that is 
+
+
+## Additional Resources
+Canopy Height Models, Digital Surface Models & Digital Elevation Models - Work With LiDAR Data in Python: https://www.earthdatascience.org/courses/use-data-open-source-python/data-stories/what-is-lidar-data/lidar-chm-dem-dsm/#:~:text=Digital%20Terrain%20Model%20(or%20DTM,of%20objects%20above%20the%20ground.
 
 
