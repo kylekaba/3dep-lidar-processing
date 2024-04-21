@@ -39,4 +39,5 @@ DTM: A digital terrain model that is
 ## Additional Resources
 Canopy Height Models, Digital Surface Models & Digital Elevation Models - Work With LiDAR Data in Python: https://www.earthdatascience.org/courses/use-data-open-source-python/data-stories/what-is-lidar-data/lidar-chm-dem-dsm/#:~:text=Digital%20Terrain%20Model%20(or%20DTM,of%20objects%20above%20the%20ground.
 
+OpenTopography 3DEP Workflows: https://github.com/OpenTopography/OT_3DEP_Workflows
 
