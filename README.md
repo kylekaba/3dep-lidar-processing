@@ -18,3 +18,6 @@ oput_dir = 'path-to-output-directory'
 if __name__ == '__main__':
     process_directory(data_directory, oput_dir,3,0,10)
 ```
+
+**data_directory**: The directory where the .las or .laz aerial lidar point clouds are hosted.
+**oput_dir**: The desired output directory where the four lidar derivative products (Digital Terrain Model (DTM), Digital Surface Model (DSM), Canopy Height Model (CHM), and Land Cover Classification Maps.
