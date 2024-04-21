@@ -1,2 +1,2 @@
 # lidar-utils: An aerial lidar point cloud data processing pipeline 
-A collection of open-source tools for processing point cloud data from the United States Geological Survey (USGS) 3D Elevation (3DEP) Program.
+The programs within this directory were designed with the intent of processing aerial lidar data point clouds taken from the United States Geological Survey's 3D Elevation Program (3DEP). The code is designed to receive a path to an input directory that contains the .las or .laz point cloud files, a path to an output directory where the derivative products will be stored, the number of CPU cores that will be used, and keywords that can specify whether the entire directory or a subset of files will be processed.
