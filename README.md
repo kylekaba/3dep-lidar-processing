@@ -14,11 +14,11 @@ conda env create -f environment.yml
 As of this version, the most straight forward approach to apply this code is to replace the following variables within the **lidar_utils.py** script:
 
 ```
-# Example Usage: Using 3 CPUs, process the first 9 .laz files within the directory input
+# Example Usage: Using 3 CPUs, process the entire directory
 data_directory = 'path-to-laz-files'
 oput_dir = 'path-to-output-directory'
 if __name__ == '__main__':
-    process_directory(data_directory, oput_dir,num_cores,n_start,n_end)
+    process_directory(data_directory, oput_dir,num_cores,None,None)
 ```
 
 *data_directory*: The directory where the .las or .laz aerial lidar point clouds are hosted.
