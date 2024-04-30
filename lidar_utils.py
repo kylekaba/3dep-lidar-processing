@@ -269,7 +269,7 @@ def interpolate_raster_nearest(dtm_path, dsm_path, lvm_path, mvm_path, hvm_path,
     diff_dtm = np.abs(dsm.data[0] - dtm.data[0])
 
     # Set a 50 cm threshold between the DSM and DTM to be considered "ground"
-    combined_no_data_mask[unclass_or_ground & (diff_pnc < diff_dtm)] = 1
+    combined_no_data_mask[unclass_or_ground] = 1
     combined_no_data_mask[unclass_or_ground & (diff_dtm <= 0.5)] = 2
 
     # Calculate absolute differences with DSM
