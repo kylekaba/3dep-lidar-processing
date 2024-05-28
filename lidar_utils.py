@@ -196,7 +196,7 @@ def interpolate_raster_nearest(dtm_path, dsm_path, lvm_path, mvm_path, hvm_path,
     """
 
     # Conversion factor between US survey feet and meters
-    conversion_factor = 1200/3937
+    #conversion_factor = 1200/3937
     
     # Open the DTM raster
     dtm = rio.open_rasterio(dtm_path,masked=True)
@@ -257,7 +257,7 @@ def interpolate_raster_nearest(dtm_path, dsm_path, lvm_path, mvm_path, hvm_path,
     # Write out the interpolated raster
     # Reset pixels that have'no-data' in all masks back to NaN
     interpolated_dtm_data[np.where(combined_no_data_mask == 0)] = np.nan
-    dtm_interpolated.data[0] = interpolated_dtm_data*conversion_factor # Convert to Meters
+    dtm_interpolated.data[0] = interpolated_dtm_data #*conversion_factor # Convert to Meters
     dtm_interpolated.rio.to_raster(output_path)
 
     # Updated Logic: Construction of 'combined_no_data_mask'
@@ -382,7 +382,7 @@ def create_chm(dsm_path, interpolated_dtm_path, chm_path):
     dsm = rio.open_rasterio(dsm_path, masked=True)
 
     # Convert the DSM from units of US Survey Feet into Meters
-    dsm.values *= 1200/3937
+    #dsm.values *= 1200/3937
 
     dsm.rio.to_raster(dsm_path)
 
