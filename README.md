@@ -15,8 +15,8 @@ As of this version, the most straight forward approach to apply this code is to 
 
 ```
 # Example Usage: Using 3 CPUs, process the first 9 .laz files within the directory input at 1 meter resolution and save the .tif files with EPSG Code 3857 as the CRS
-data_directory = '/nobackupp27/kkabasar/nas-jobs/Hexagon_Analysis'
-output_directory = '/Users/kkabasar/Desktop/Hexagon_USGS_30cm_Product'
+data_directory = 'path/to/laz/files'
+output_directory = 'output/directory'
 dem_resolution = 0.3  # User-defined DEM resolution
 elevation_units = 'm'  # The units the elevation data are measured in (converted to meters) ('m', 'ft', 'km')
 epsg_code = '3857'  # User-defined EPSG code
