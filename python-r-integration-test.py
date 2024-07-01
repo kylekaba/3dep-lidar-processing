@@ -42,14 +42,11 @@ def generate_pixel_metrics(laz_file, output_dir, pixel_size, elevation_units, r_
             "zkurtosis": "kurtosis(Z)",
             "zmin": "min(Z)",
             "zq10": "quantile(Z, probs = 0.10)",
-            "zq20": "quantile(Z, probs = 0.20)",
-            "zq30": "quantile(Z, probs = 0.30)",
-            "zq40": "quantile(Z, probs = 0.40)",
+            "zq25": "quantile(Z, probs = 0.25)",
             "zq50": "quantile(Z, probs = 0.50)",
-            "zq60": "quantile(Z, probs = 0.60)",
-            "zq70": "quantile(Z, probs = 0.70)",
-            "zq80": "quantile(Z, probs = 0.80)",
-            "zq90": "quantile(Z, probs = 0.90)"
+            "zq75": "quantile(Z, probs = 0.75)",
+            "zq90": "quantile(Z, probs = 0.90)",
+            "zq95": "quantile(Z, probs = 0.95)"
         }
 
         # Define R script to process the .laz file and save each metric as a GeoTIFF
@@ -85,12 +82,12 @@ def generate_pixel_metrics(laz_file, output_dir, pixel_size, elevation_units, r_
           zkurtosis <- kurtosis(x)
           zmin <- min(x)
           zq10 <- quantile(x, probs = 0.10)
-          zq20 <- quantile(x, probs = 0.25)
+          zq25 <- quantile(x, probs = 0.25)
           zq50 <- quantile(x, probs = 0.50)
           zq75 <- quantile(x, probs = 0.75)
           zq90 <- quantile(x, probs = 0.90)
           zq95 <- quantile(x, probs = 0.95)
-          return(list(zmax=zmax, zmean=zmean, zsd=zsd, zskew=zskew, zkurtosis=zkurtosis, zmin=zmin, zq10=zq10, zq20=zq20, zq30=zq30, zq40=zq40, zq50=zq50, zq60=zq60, zq70=zq70, zq80=zq80, zq90=zq90))
+          return(list(zmax=zmax, zmean=zmean, zsd=zsd, zskew=zskew, zkurtosis=zkurtosis, zmin=zmin, zq10=zq10, zq25=zq25, zq50=zq50, zq75=zq75, zq90=zq90, zq95=zq95))
         }}
 
         metrics <- pixel_metrics(las, ~custom_metrics(Z), res={pixel_size})
@@ -120,7 +117,7 @@ def generate_pixel_metrics(laz_file, output_dir, pixel_size, elevation_units, r_
     except Exception as e:
         print(f"Error processing {laz_file}: {str(e)}")
 
-def process_laz_files(input_dir, output_dir, pixel_size, elevation_units, r_lib_path, num_cores=2):
+def process_laz_files(input_dir, output_dir, pixel_size, elevation_units, rs_lib_path, num_cores=2):
     """
     Process multiple .laz files in parallel to generate specified pixel metrics GeoTIFFs.
 
@@ -144,11 +141,11 @@ def process_laz_files(input_dir, output_dir, pixel_size, elevation_units, r_lib_
 
 if __name__ == "__main__":
     # Example usage
-    input_directory = 'input-directory-path'
-    output_directory = 'output-directory-path'
-    pixel_size =   # Custom pixel size in meters
+    input_directory = 'path/to/laz/files'
+    output_directory = 'path/to/output/directory'
+    pixel_size = 10  # Custom pixel size in m
     elevation_units = 'm'  # User-defined elevation units ('m', 'ft', 'km')
-    r_lib_path = "R-library-path"  # Path to your R library
+    r_lib_path = "r-library-path"  # Path to your R library
 
     # Use 2 CPU cores for processing
     process_laz_files(input_directory, output_directory, pixel_size, elevation_units, r_lib_path, num_cores=2)
