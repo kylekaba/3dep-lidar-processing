@@ -64,8 +64,15 @@ A description of standard point classes set by ASPRS can be found here: https://
 
 In cases where the point cloud's density is high and multiple classes can be found at a given raster grid cell, the pipeline will select the class with the highest elevation in the combined land cover map. An individual rasterized land cover map for each class is also included as a separate band within the GeoTIFF file. A threshold of DSM - DTM < 0.5 m was used to separate Class 2 (ground) and Class 1 (unclassified) points. 
 
+# Generating Statisitcal Metrics of Lidar Point Clouds
+(To be completed)
+
 ## Additional Resources
 Canopy Height Models, Digital Surface Models & Digital Elevation Models - Work With LiDAR Data in Python: https://www.earthdatascience.org/courses/use-data-open-source-python/data-stories/what-is-lidar-data/lidar-chm-dem-dsm/#:~:text=Digital%20Terrain%20Model%20(or%20DTM,of%20objects%20above%20the%20ground.
 
 OpenTopography 3DEP Workflows: https://github.com/OpenTopography/OT_3DEP_Workflows
+
+The lidR package: https://r-lidar.github.io/lidRbook/
+
+lidR learning modules: https://lab.jonesctr.org/lidar-processing-for-forestry-and-natural-resources-module-1-viewing-data/
 
