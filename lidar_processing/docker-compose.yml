@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  lidar_processing:
+    build: .
+    volumes:
+      - /Users/skhajehe/Desktop/3dep-lidar-processing/lidar_processing/input:/input
+      - /Users/skhajehe/Desktop/3dep-lidar-processing/lidar_processing/output:/output
+    entrypoint: ["Rscript", "process_lidar_par.R", "/input/$FILE_NAME", "/output"]
+    deploy:
+      mode: replicated
+      replicas: 2  # Adjust the number of replicas as needed
+    

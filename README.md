@@ -14,18 +14,28 @@ conda env create -f environment.yml
 As of this version, the most straight forward approach to apply this code is to replace the following variables within the **lidar_utils.py** script:
 
 ```
-# Example Usage: Using 3 CPUs, process the entire directory
-data_directory = 'path-to-laz-files'
-oput_dir = 'path-to-output-directory'
+# Example Usage: Using 3 CPUs, process the first 9 .laz files within the directory input at 1 meter resolution and save the .tif files with EPSG Code 3857 as the CRS
+data_directory = 'path/to/laz/files'
+output_directory = 'output/directory'
+dem_resolution = 0.3  # User-defined DEM resolution
+elevation_units = 'm'  # The units the elevation data are measured in (converted to meters) ('m', 'ft', 'km')
+epsg_code = '3857'  # User-defined EPSG code
+
 if __name__ == '__main__':
-    process_directory(data_directory, oput_dir,num_cores,None,None)
+    process_directory(data_directory, output_directory, num_cores=1, dem_resolution=dem_resolution, elevation_units=elevation_units, epsg_code=epsg_code, n_start=0, n_end=1)
 ```
 
 *data_directory*: The directory where the .las or .laz aerial lidar point clouds are hosted.
 
 *oput_dir*: The desired output directory where the four lidar derivative products (Digital Terrain Model (DTM), Digital Surface Model (DSM), Canopy Height Model (CHM), and Land Cover Classification Maps.
 
-*num_cores*: The number of CPU processors that will be used. Each processor will independently process a .las or .laz file.
+*output_directory*: The number of CPU processors that will be used. Each processor will independently process a .las or .laz file.
+
+*dem_resolution*: The desired output resolution of the rasters in meters.
+
+*elevation_units*: The units that elevations are measured in within the lidar point cloud. Current options are meters, ft, and km. Depending on the units, the code converts the elevation data to have units of meters. 
+
+*epsg_code*: The CRS the user wishes to save the GeoTIFF rasters in.
 
 *n_start*: Starting index used to indicate where in the sorted list of .laz files the processing will begin. Default is **None**.
 
