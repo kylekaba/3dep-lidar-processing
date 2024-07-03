@@ -65,7 +65,35 @@ A description of standard point classes set by ASPRS can be found here: https://
 In cases where the point cloud's density is high and multiple classes can be found at a given raster grid cell, the pipeline will select the class with the highest elevation in the combined land cover map. An individual rasterized land cover map for each class is also included as a separate band within the GeoTIFF file. A threshold of DSM - DTM < 0.5 m was used to separate Class 2 (ground) and Class 1 (unclassified) points. 
 
 # Generating Statisitcal Metrics of Lidar Point Clouds
-(To be completed)
+The pixel_metrics_with_lidR.py program uses the rpy2 package to integrate both R and Python. This integration is designed to call function sfrom the **lidR** function in R to generate pixel-level metrics of a .laz point cloud and generate rasters of those statistics. The current version of this program creates rasters of the following statistics (Z is the elevation height relative to the ground) and uses the **multiprocessing** functionality of Python to parallelize the process.
+
+1. Z Maximum
+2. Z Minimum
+3. Z Standard Deviation
+4. Z Skew
+5. Z Kurtosis
+6. Z (10th Percentile)
+7. Z (25th Percentile)
+8. Z (50th Percentile)
+9. Z (75th Percentile)
+10. Z (90th Percentile)
+11. Z (95th Percentile)
+
+## How to Run
+As of this version, the most straight forward approach to apply this code is to replace the following variables within the **pixel_metrics_with_lidR.py** script:
+
+```
+if __name__ == "__main__":
+    # Example usage
+    input_directory = 'path/to/laz/files'
+    output_directory = 'path/to/output/directory'
+    pixel_size = 10  # Custom pixel size in m
+    elevation_units = 'm'  # User-defined elevation units ('m', 'ft', 'km')
+    r_lib_path = "r-library-path"  # Path to your R library
+
+    # Use 2 CPU cores for processing
+    process_laz_files(input_directory, output_directory, pixel_size, elevation_units, r_lib_path, num_cores=2)
+```
 
 ## Additional Resources
 Canopy Height Models, Digital Surface Models & Digital Elevation Models - Work With LiDAR Data in Python: https://www.earthdatascience.org/courses/use-data-open-source-python/data-stories/what-is-lidar-data/lidar-chm-dem-dsm/#:~:text=Digital%20Terrain%20Model%20(or%20DTM,of%20objects%20above%20the%20ground.
